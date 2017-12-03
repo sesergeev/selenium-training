@@ -6,7 +6,7 @@ for software-testing.ru
 
 Урок 2
 
-https://github.com/sesergeev/selenium-training/tree/master/sel13/lesson2
+https://github.com/sesergeev/selenium-training/tree/master/sel13/lesson2/src/test/java
 
 задача 1 ->Google.java 
 
@@ -16,7 +16,8 @@ https://github.com/sesergeev/selenium-training/tree/master/sel13/lesson2
 
 Запуск всех браузеров в одном модуле
 
-C:\!Idea\Projects\Git\selenium-training\sel13\lesson3\src\test\java
+https://github.com/sesergeev/selenium-training/tree/master/sel13/lesson3/src/test/java
 
 threeBrowsers.java
+
 
