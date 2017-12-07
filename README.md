@@ -21,3 +21,10 @@ https://github.com/sesergeev/selenium-training/tree/master/sel13/lesson3/src/tes
 threeBrowsers.java
 
 
+Урок 4 
+
+https://github.com/sesergeev/selenium-training/tree/master/sel13/lesson4/src/test/java
+
+задача 7 -> leftPanelClicker.java
+
+задача 8 ->  	stickers.java
