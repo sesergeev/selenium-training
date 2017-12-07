@@ -27,12 +27,6 @@ public class stickers {
     }
 
     @Test
-    public void testIE() {
-
-        parallelBrowsers(WebDriverPool.DEFAULT.getDriver(DesiredCapabilities.internetExplorer()));
-    }
-
-    @Test
     public void testChrome() {
 
         parallelBrowsers(WebDriverPool.DEFAULT.getDriver(DesiredCapabilities.chrome()));
@@ -49,18 +43,27 @@ public class stickers {
         WebDriverWait wait = new WebDriverWait(driver,5);
         driver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
         driver.get(baseUrl);
+        WebElement sticker;
+        List<WebElement> wrapperProduct = driver.findElements(By.cssSelector("ul.listing-wrapper > li"));
 
-        //List<WebElement> wrapperProduct = driver.findElements(By.cssSelector("ul.listing-wrapper > li"));
-        List<WebElement> wrapperProduct = driver.findElements(By.cssSelector("div.sticker"));
+            for (WebElement element: wrapperProduct) {
+            sticker = element.findElement(By.cssSelector("div.sticker"));
+                System.out.print(sticker.getText());
+               switch (sticker.getText()){
+                   case "SALE":
+                   case "NEW":
+                       System.out.println(" получен - Всё хорошо");
+                       break;
+                   default:
+                       System.out.println("Всё плохо");
+
+                       break;
+               }
+               }
+
+              }
 
 
-        for (WebElement element: wrapperProduct) {
-
-            //System.out.println(element.getCssValue("div.sale"));
-
-        }
-
-    }
 
 
 

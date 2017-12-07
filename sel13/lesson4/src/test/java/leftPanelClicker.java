@@ -25,11 +25,6 @@ public class leftPanelClicker {
 
     }
 
-    @Test
-    public void testIE() {
-
-        parallelBrowsers(WebDriverPool.DEFAULT.getDriver(DesiredCapabilities.internetExplorer()));
-    }
 
     @Test
     public void testChrome() {
@@ -37,11 +32,7 @@ public class leftPanelClicker {
         parallelBrowsers(WebDriverPool.DEFAULT.getDriver(DesiredCapabilities.chrome()));
     }
 
-    @Test
-    public void testFirefox() {
 
-        parallelBrowsers(WebDriverPool.DEFAULT.getDriver(DesiredCapabilities.firefox()));
-    }
 
     public void parallelBrowsers(WebDriver driver){
 
