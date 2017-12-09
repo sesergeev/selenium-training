@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.stqa.selenium.factory.WebDriverPool;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
@@ -37,7 +37,7 @@ public class leftPanelClicker {
     public void parallelBrowsers(WebDriver driver){
 
         WebDriverWait wait = new WebDriverWait(driver,5);
-        driver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
+       // driver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
         driver.get(baseUrl);
 
         //логин
@@ -49,14 +49,22 @@ public class leftPanelClicker {
 
 
         //построение массива из всех кнопок левой панели
-        WebElement leftPanel = driver.findElement(By.cssSelector("#box-apps-menu"));
-        List<WebElement> links = leftPanel.findElements(By.tagName("li"));
+        List<WebElement> links = driver.findElements(By.cssSelector("#box-apps-menu > li"));
         for (int i = 1; i <= links.size(); i++)
         {
             driver.findElement(By.cssSelector("#box-apps-menu > li:nth-child("+i+")")).click();
-            wait.until(presenceOfElementLocated(By.cssSelector("h1")));
+            if (driver.findElements(By.cssSelector("#box-apps-menu > li:nth-child("+i+") li")).size() != 0)
+            {
+                for (int y = 1; y <= driver.findElements(By.cssSelector("#box-apps-menu > li:nth-child("+i+") li")).size(); y++)
+                {
+                    driver.findElement(By.cssSelector("#box-apps-menu > li:nth-child("+i+") > ul > li:nth-child("+y+")")).click();
+                    wait.until(presenceOfElementLocated(By.cssSelector("h1")));
+                }
 
-
+            }
+            else {
+                wait.until(presenceOfElementLocated(By.cssSelector("h1")));
+            }
         }
 
         //кнопка выход
