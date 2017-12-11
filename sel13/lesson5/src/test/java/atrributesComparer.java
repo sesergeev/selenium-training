@@ -62,7 +62,7 @@ public class atrributesComparer {
         driver.findElement(By.cssSelector("#box-campaigns ul li")).click();
 
         String productMainPageDuck = duckCheckerProductPage(driver.findElement(By.cssSelector("#box-product")));
-
+        if (productMainPageDuck.equals("!!!!EXCEPTION!!!!"))  WebDriverPool.DEFAULT.dismissDriver(driver);
         if (mainPageDuck.equals(productMainPageDuck)) {System.out.println("Утки одинаковые!");}
         else {System.out.println("Данные не одинаковые!");}
 
@@ -76,13 +76,23 @@ public class atrributesComparer {
         String regularPrice = duckChecked.findElement(By.className("regular-price")).getAttribute("innerText");
         String regularPriceColor = duckChecked.findElement(By.className("regular-price")).getCssValue("color");
         String regularPriceTextStyle = duckChecked.findElement(By.className("regular-price")).getCssValue("text-decoration");
+        String regularPriceTextSize = duckChecked.findElement(By.className("regular-price")).getCssValue("font-size");
 
 
         String campaignPrice = duckChecked.findElement(By.className("campaign-price")).getAttribute("innerText");
         String campaignPriceColor = duckChecked.findElement(By.className("campaign-price")).getCssValue("color");
         String campaignPriceTextStyle = duckChecked.findElement(By.className("campaign-price")).getCssValue("font-weight");
+        String campaignPriceTextSize = duckChecked.findElement(By.className("campaign-price")).getCssValue("font-size");
 
         //Check color and attributes of price numbers
+        float regularPTS = Float.parseFloat(regularPriceTextSize.replaceAll("px",""));
+        float campaignPTS = Float.parseFloat(campaignPriceTextSize.replaceAll("px",""));
+
+        if (regularPTS >= campaignPTS) {
+            System.out.println("campaign Price number must be bigger");
+            return exception;
+        }
+
         regularPriceTextStyle = regularPriceTextStyle.substring(0, 12);
         if (!(regularPriceTextStyle.equals("line-through"))) {
             System.out.println("regular price number is not slashed");
@@ -134,13 +144,24 @@ public class atrributesComparer {
         String regularPrice = duckChecked.findElement(By.className("regular-price")).getAttribute("innerText");
         String regularPriceColor = duckChecked.findElement(By.className("regular-price")).getCssValue("color");
         String regularPriceTextStyle = duckChecked.findElement(By.className("regular-price")).getCssValue("text-decoration");
-
+        String regularPriceTextSize = duckChecked.findElement(By.className("regular-price")).getCssValue("font-size");
 
         String campaignPrice = duckChecked.findElement(By.className("campaign-price")).getAttribute("innerText");
         String campaignPriceColor = duckChecked.findElement(By.className("campaign-price")).getCssValue("color");
         String campaignPriceTextStyle = duckChecked.findElement(By.className("campaign-price")).getCssValue("font-weight");
-
+        String campaignPriceTextSize = duckChecked.findElement(By.className("campaign-price")).getCssValue("font-size");
         //Check color and attributes of price numbers
+        float regularPTS = Float.parseFloat(regularPriceTextSize.replaceAll("px",""));
+        float campaignPTS = Float.parseFloat(campaignPriceTextSize.replaceAll("px",""));
+
+        if (regularPTS >= campaignPTS) {
+            System.out.println("campaign Price number must be bigger");
+            return exception;
+        }
+
+
+
+
         regularPriceTextStyle = regularPriceTextStyle.substring(0, 12);
         if (!(regularPriceTextStyle.equals("line-through"))) {
             System.out.println("regular price number is not slashed");
