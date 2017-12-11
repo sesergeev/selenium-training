@@ -6,8 +6,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.stqa.selenium.factory.WebDriverPool;
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -39,7 +39,8 @@ public class atrributesComparer {
    public void testFirefox() {
 
    parallelBrowsers(WebDriverPool.DEFAULT.getDriver(DesiredCapabilities.firefox()));
-   }
+
+}
 
     public void parallelBrowsers(WebDriver driver){
 
@@ -48,10 +49,10 @@ public class atrributesComparer {
         driver.get(baseUrl);
 
         String mainPageDuck = duckCheckerMainPage(driver.findElement(By.cssSelector("#box-campaigns ul li")));
+        if (mainPageDuck.equals("!!!!EXCEPTION!!!!"))  WebDriverPool.DEFAULT.dismissDriver(driver);
 
 
-
-        // ------------Переходим на утку--------------------------
+        // ------------Following the duck--------------------------
         JavascriptExecutor jse = (JavascriptExecutor)driver;
 
         jse.executeScript("arguments[0].scrollIntoView()", driver.findElement(By.cssSelector("#box-campaigns ul li")));
@@ -62,18 +63,19 @@ public class atrributesComparer {
 
         String productMainPageDuck = duckCheckerProductPage(driver.findElement(By.cssSelector("#box-product")));
 
-        if (mainPageDuck.equals(productMainPageDuck)) {System.out.println("COOL!");}
+        if (mainPageDuck.equals(productMainPageDuck)) {System.out.println("Утки одинаковые!");}
+        else {System.out.println("Данные не одинаковые!");}
 
     }
 
     //The functions stores the attributes of the clicked product item and compares them with analogies elements in the product page
     public String duckCheckerMainPage(WebElement duckChecked){
-
+        String exception = "!!!!EXCEPTION!!!!";
         String productName = duckChecked.findElement(By.className("name")).getAttribute("innerText");
 
         String regularPrice = duckChecked.findElement(By.className("regular-price")).getAttribute("innerText");
         String regularPriceColor = duckChecked.findElement(By.className("regular-price")).getCssValue("color");
-        String regularPriceTextStyle = duckChecked.findElement(By.className("regular-price")).getCssValue("text-decoration-line");
+        String regularPriceTextStyle = duckChecked.findElement(By.className("regular-price")).getCssValue("text-decoration");
 
 
         String campaignPrice = duckChecked.findElement(By.className("campaign-price")).getAttribute("innerText");
@@ -81,9 +83,10 @@ public class atrributesComparer {
         String campaignPriceTextStyle = duckChecked.findElement(By.className("campaign-price")).getCssValue("font-weight");
 
         //Check color and attributes of price numbers
-
+        regularPriceTextStyle = regularPriceTextStyle.substring(0, 12);
         if (!(regularPriceTextStyle.equals("line-through"))) {
             System.out.println("regular price number is not slashed");
+            return exception;
         }
 
 
@@ -93,6 +96,7 @@ public class atrributesComparer {
                 campaignPriceTextStyle.equals("900")
                 ))        {
             System.out.println("Campaign price number is not Bold");
+            return exception;
         }
 
         String[] colorNumbers = regularPriceColor.replace("rgba(", "").replace(")", "").split(",");
@@ -104,6 +108,7 @@ public class atrributesComparer {
 
         if (!(r == g && g == b)) {
             System.out.println("Color of regular price not gray");
+            return exception;
 
         }
 
@@ -115,7 +120,7 @@ public class atrributesComparer {
 
         if (!(r > g && (g + b) == 0)) {
             System.out.println("Color of campaign price not red");
-
+            return exception;
         }
 
             return productName + regularPrice + campaignPrice;
@@ -123,11 +128,12 @@ public class atrributesComparer {
     }
 
     public String duckCheckerProductPage(WebElement duckChecked){
+        String exception = "!!!!EXCEPTION!!!!";
         String productName = duckChecked.findElement(By.tagName("h1")).getAttribute("innerText");
 
         String regularPrice = duckChecked.findElement(By.className("regular-price")).getAttribute("innerText");
         String regularPriceColor = duckChecked.findElement(By.className("regular-price")).getCssValue("color");
-        String regularPriceTextStyle = duckChecked.findElement(By.className("regular-price")).getCssValue("text-decoration-line");
+        String regularPriceTextStyle = duckChecked.findElement(By.className("regular-price")).getCssValue("text-decoration");
 
 
         String campaignPrice = duckChecked.findElement(By.className("campaign-price")).getAttribute("innerText");
@@ -135,9 +141,10 @@ public class atrributesComparer {
         String campaignPriceTextStyle = duckChecked.findElement(By.className("campaign-price")).getCssValue("font-weight");
 
         //Check color and attributes of price numbers
-
+        regularPriceTextStyle = regularPriceTextStyle.substring(0, 12);
         if (!(regularPriceTextStyle.equals("line-through"))) {
             System.out.println("regular price number is not slashed");
+            return exception;
         }
 
 
@@ -147,6 +154,7 @@ public class atrributesComparer {
                 campaignPriceTextStyle.equals("900")
         ))        {
             System.out.println("Campaign price number is not Bold");
+            return exception;
         }
 
         String[] colorNumbers = regularPriceColor.replace("rgba(", "").replace(")", "").split(",");
@@ -158,6 +166,7 @@ public class atrributesComparer {
 
         if (!(r == g && g == b)) {
             System.out.println("Color of regular price not gray");
+            return exception;
 
         }
 
@@ -169,6 +178,7 @@ public class atrributesComparer {
 
         if (!(r > g && (g + b) == 0)) {
             System.out.println("Color of campaign price not red");
+            return exception;
 
         }
 
