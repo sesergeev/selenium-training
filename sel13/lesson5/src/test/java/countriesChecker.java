@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.stqa.selenium.factory.WebDriverPool;
 
@@ -97,7 +98,75 @@ public class countriesChecker {
                 //сравнимаем что списки стран одинаковые и завершаем тест если это не так
                 if (!countriesInTheSite.equals(countriesByAbc)) {
                     System.out.println("Зоны не по алфавиту!");
-                    driver.quit();
+
+
+                }
+                else System.out.println("Зоны в алфавитном порядке!");
+
+
+            }
+
+
+
+        }
+
+        //-------Гео Зоны------
+
+        //идём на страницу GeoZones
+        driver.findElement(By.cssSelector("#box-apps-menu > li:nth-child(6)")).click();
+        wait.until(presenceOfElementLocated(By.cssSelector("h1")));
+        //получаем массив всех стран
+        countriesByAbc = new ArrayList<>();
+        countriesInTheSite = new ArrayList<>();
+        countiesWithNotZeroZones = new ArrayList<>();
+        countriesRow = driver.findElements(By.cssSelector("tr.row"));
+        for(WebElement county:countriesRow){
+
+            WebElement countryLink = county.findElement(By.cssSelector("td:nth-child(3) a"));
+            countriesByAbc.add(countryLink.getAttribute("innerText"));
+            countriesInTheSite.add(countryLink.getAttribute("innerText"));
+
+            WebElement zoneId = county.findElement(By.cssSelector("td:nth-child(4)"));
+            String zoneIdAttribute = zoneId.getAttribute("innerText");
+
+            if (!zoneIdAttribute.equals("0")){
+                countiesWithNotZeroZones.add(countryLink.getAttribute("href"));
+
+            }
+
+        }
+
+        //в countriesByAbc сортируем страны по алфавиту
+        Collections.sort(countriesByAbc, mycomparator);
+        //сравнимаем что списки стран одинаковые и завершаем тест если это не так
+        if (!countriesInTheSite.equals(countriesByAbc)) {
+            System.out.println("Геозоны не по алфавиту!");
+            driver.quit();
+        }
+
+        else {System.out.println("Геозоны в алфавитном порядке!");
+
+            //проверка стран у которых есть зоны
+            for (String zoneLink: countiesWithNotZeroZones ){
+                countriesInTheSite.clear();
+                countriesByAbc.clear();
+                driver.get(zoneLink);
+                //#table-zones tbody tr td:nth-child(3)
+                countriesRow = driver.findElements(By.cssSelector("#table-zones tbody tr td:nth-child(3) select"));
+                for(WebElement countryLink:countriesRow) {
+                       Select selectZone = new Select(countryLink);
+                       countriesByAbc.add(selectZone.getFirstSelectedOption().getAttribute("innerText"));
+                       countriesInTheSite.add(selectZone.getFirstSelectedOption().getAttribute("innerText"));
+
+
+                }
+
+                Collections.sort(countriesByAbc, mycomparator);
+
+                //сравнимаем что списки стран одинаковые и завершаем тест если это не так
+                if (!countriesInTheSite.equals(countriesByAbc)) {
+                    System.out.println("Зоны не по алфавиту!");
+
 
                 }
                 else System.out.println("Зоны в алфавитном порядке!");
@@ -111,7 +180,7 @@ public class countriesChecker {
 
 
 
-
+        driver.quit();
     }
 
 
