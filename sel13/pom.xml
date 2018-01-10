@@ -11,6 +11,7 @@
     <modules>
         <module>lesson2</module>
         <module>lesson3</module>
+        <module>lesson11</module>
     </modules>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->

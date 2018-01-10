@@ -48,6 +48,7 @@ public class atrributesComparer {
         driver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
         driver.get(baseUrl);
 
+
         String mainPageDuck = duckCheckerMainPage(driver.findElement(By.cssSelector("#box-campaigns ul li")));
         if (mainPageDuck.equals("!!!!EXCEPTION!!!!"))  WebDriverPool.DEFAULT.dismissDriver(driver);
 
